@@ -13,6 +13,9 @@ import com.qwertcardo.kafkalibraryeventsproducer.domain.LibraryEvent;
 import com.qwertcardo.kafkalibraryeventsproducer.domain.enums.LibraryEventType;
 import com.qwertcardo.kafkalibraryeventsproducer.producer.LibraryEventProducer;
 
+import javax.validation.Valid;
+
+
 @RestController
 @RequestMapping(value = "/libraryevent")
 public class LibraryEventController {
@@ -21,7 +24,7 @@ public class LibraryEventController {
 	private LibraryEventProducer libraryEventProducer;
 
 	@PostMapping(value = "/v1/save")
-	public ResponseEntity<?> saveLibraryEvent(@RequestBody LibraryEvent libraryEvent) {
+	public ResponseEntity<?> saveLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) {
 		try {
 			libraryEvent.setLibraryEventType(LibraryEventType.NEW);
 			libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
@@ -36,7 +39,7 @@ public class LibraryEventController {
 		try {
 			libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
 			libraryEventProducer.sendLibraryEventV2(libraryEvent);
-			return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
+			return ResponseEntity.status(HttpStatus.OK).body(libraryEvent);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}

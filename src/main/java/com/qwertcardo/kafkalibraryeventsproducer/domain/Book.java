@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,11 +20,14 @@ import lombok.NoArgsConstructor;
 public class Book {
 
 	@Id
+	@NotNull
 	private String id;
-	
+
 	@Field(name = "name")
+	@NotBlank
 	private String name;
-	
+
 	@Field(name = "author")
+	@NotBlank
 	private String author;
 }
